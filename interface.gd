@@ -6,6 +6,7 @@ class_name Interface extends Control
 static var me:Interface
 
 var surface_names:Dictionary = {}
+var surf_to_des:Dictionary = {} 
 
 var surface_list:Array[Surface] = []
 
@@ -57,6 +58,12 @@ func set_state(news:int,any=null)->void:
 	bonus_state=any
 	state=news
 
+func rem_surface(surf:Surface)->void:
+	surface_list.pop_at(surface_list.find(surf))
+	surface_names.erase(surf.surface_name)
+	surf_to_des[surf].queue_free()
+	surf_to_des.erase(surf)
+
 func add_surface(sname:String)->void:
 	if sname in surface_names: 
 		$MakeSurface/NotUnique.show_up()
@@ -71,6 +78,7 @@ func add_surface(sname:String)->void:
 
 func make_descriptor_for_surf(surf:Surface)->void:
 	var des:SurfaceDescriptor = descriptor_scene.instantiate()
+	surf_to_des[surf]=des
 	des.surface_id = surf.surface_name
 	surface_names[surf.surface_name]=true
 	surface_pick_node.desription_container.add_child(des)
@@ -93,6 +101,7 @@ func load_saved(file:FileAccess):
 		surface_list.append(surf)
 
 func run_search(strn:String):
+	$PickSurface/SearchBar.text=""
 	state=SEARCH_RESULTS
 	search_node.run_search(strn)
 
@@ -100,14 +109,26 @@ func _input(_event):
 	if Input.is_action_just_pressed("back"):
 		back()
 		
-func do_save():
+func do_save(quitout:bool=false):
 	var file = FileAccess.open("user://data", FileAccess.WRITE)
 	save(file)
-	
+	if quitout:
+		quit()
+
+func quit():
+	get_tree().quit()
+
 func do_load():
 	var file = FileAccess.open("user://data", FileAccess.READ)
 	if (file):
 		load_saved(file)
 
 func back():
+	if state==0:
+		$MarginContainer.visible=not $MarginContainer.visible
+		return
 	state=back_map[state]
+
+
+func _on_data_pressed():
+	OS.shell_open(ProjectSettings.globalize_path("user://"))

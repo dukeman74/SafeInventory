@@ -13,6 +13,7 @@ var container:StorageContainer:
 func add_new_item(strn:String,new:bool=true)->void:
 	if new:
 		container.insort(strn)
+		$VBoxContainer/LineEdit4.text=""
 	var line:LineItem = line_item_scene.instantiate()
 	line.get_node("HBoxContainer/LineEdit").text=strn
 	line.og_text=strn

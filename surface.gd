@@ -11,7 +11,7 @@ var container_list:Array[StorageContainer] = []
 var surface_name:String:
 	set(val):
 		surface_name=val
-		$Title.text=val
+		$HBoxContainer/Title.text=val
 
 
 func new_container():
@@ -48,3 +48,8 @@ static func deserialize(file:FileAccess)->Surface:
 		ret.container_list.append(box)
 	return ret
 	
+func destroy():
+	var interface:Interface = get_node("../..")
+	interface.back()
+	interface.rem_surface(self)
+	queue_free()

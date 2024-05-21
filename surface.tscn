@@ -34,16 +34,26 @@ layout_mode = 2
 text = "100"
 placeholder_text = "Y size"
 
-[node name="Title" type="Label" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_left = 148.0
-offset_right = -148.0
-offset_bottom = 23.0
+offset_left = 307.0
+offset_right = -307.0
+offset_bottom = 35.0
 grow_horizontal = 2
+theme_override_constants/separation = 200
+alignment = 1
+
+[node name="Button" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "DESTROY SURFACE"
+
+[node name="Title" type="Label" parent="HBoxContainer"]
+layout_mode = 2
 theme_override_font_sizes/font_size = 25
 text = "LEFT GARAGE DOOR"
 horizontal_alignment = 1
 
 [connection signal="pressed" from="VBoxContainer/Button" to="." method="new_container"]
+[connection signal="pressed" from="HBoxContainer/Button" to="." method="destroy"]

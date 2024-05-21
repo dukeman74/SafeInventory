@@ -173,9 +173,79 @@ offset_bottom = 8.0
 grow_horizontal = 0
 text = "SAVE"
 
+[node name="MarginContainer" type="MarginContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -21.0
+offset_top = -15.5
+offset_right = 21.0
+offset_bottom = 15.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer"]
+layout_mode = 2
+color = Color(0.377919, 0.377919, 0.377919, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "--------------- QUIT? make sure to save if you intented to --------------- "
+
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Back
+"
+
+[node name="Data" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Show data folder
+"
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 4
+text = "Save 'n Quit"
+
+[node name="Button2" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(0.831373, 0, 0, 1)
+text = "Quit and lose my changes"
+
 [connection signal="text_submitted" from="PickSurface/SearchBar" to="." method="run_search"]
 [connection signal="pressed" from="PickSurface/Button" to="." method="set_state" binds= [1]]
 [connection signal="text_submitted" from="MakeSurface/LineEdit" to="." method="add_surface"]
 [connection signal="timeout" from="MakeSurface/NotUnique/Timer" to="MakeSurface/NotUnique" method="dissapear"]
 [connection signal="pressed" from="Button" to="." method="back"]
 [connection signal="pressed" from="SaveButton" to="." method="do_save"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Button" to="." method="back"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Data" to="." method="_on_data_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/Button" to="." method="do_save" binds= [true]]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/Button2" to="." method="quit"]
