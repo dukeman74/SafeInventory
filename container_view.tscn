@@ -1,0 +1,72 @@
+[gd_scene load_steps=3 format=3 uid="uid://cwhkswjld3pi4"]
+
+[ext_resource type="Script" path="res://container_view.gd" id="1_ridfd"]
+[ext_resource type="PackedScene" uid="uid://c83aumv3htbse" path="res://single_line_item.tscn" id="2_yk8he"]
+
+[node name="ContainerView" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ridfd")
+line_item_scene = ExtResource("2_yk8he")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Fill" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+placeholder_text = "FILL LEVEL"
+alignment = 1
+
+[node name="X" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 6
+placeholder_text = "X SIZE"
+alignment = 1
+
+[node name="Y" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 2
+placeholder_text = "Y SIZE"
+alignment = 1
+
+[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "DESTROY"
+
+[node name="LineEdit4" type="LineEdit" parent="VBoxContainer"]
+layout_mode = 2
+placeholder_text = "NEW ITEM"
+alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[connection signal="text_submitted" from="VBoxContainer/HBoxContainer/Fill" to="." method="_on_fill_text_submitted"]
+[connection signal="text_submitted" from="VBoxContainer/HBoxContainer/X" to="." method="_on_x_text_submitted"]
+[connection signal="text_submitted" from="VBoxContainer/HBoxContainer/Y" to="." method="_on_y_text_submitted"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Button" to="." method="_on_button_pressed"]
+[connection signal="text_submitted" from="VBoxContainer/LineEdit4" to="." method="add_new_item"]

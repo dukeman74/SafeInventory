@@ -1,0 +1,10 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://502jd8d7tlm1"]
+
+[ext_resource type="Shader" path="res://outline.gdshader" id="1_iw7ti"]
+
+[resource]
+shader = ExtResource("1_iw7ti")
+shader_parameter/color_signal = Color(1, 1, 1, 1)
+shader_parameter/size = 0.2
+shader_parameter/zoom = 8.0
+shader_parameter/speed = 1.0

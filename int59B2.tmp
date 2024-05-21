@@ -1,0 +1,123 @@
+[gd_scene load_steps=7 format=3 uid="uid://dulgiqt6d7tbw"]
+
+[ext_resource type="Script" path="res://interface.gd" id="1_56li5"]
+[ext_resource type="PackedScene" uid="uid://mh1njj8cqf6h" path="res://surface_descriptor.tscn" id="2_581jl"]
+[ext_resource type="Script" path="res://PickSurface.gd" id="2_m6lpy"]
+[ext_resource type="Script" path="res://not_unique.gd" id="4_0w6tl"]
+[ext_resource type="PackedScene" uid="uid://c22nqn27cq8fc" path="res://surface.tscn" id="5_m55mj"]
+[ext_resource type="PackedScene" uid="uid://cwhkswjld3pi4" path="res://container_view.tscn" id="6_ntvm5"]
+
+[node name="Interface" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_56li5")
+descriptor_scene = ExtResource("2_581jl")
+container_view_scene = ExtResource("6_ntvm5")
+
+[node name="PickSurface" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_m6lpy")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PickSurface"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 157.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PickSurface/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="PickSurface"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 55.0
+grow_horizontal = 2
+text = "Select a surface"
+horizontal_alignment = 1
+
+[node name="Button" type="Button" parent="PickSurface"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 76.0
+offset_bottom = 107.0
+grow_horizontal = 2
+text = "New Surface"
+
+[node name="MakeSurface" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LineEdit" type="LineEdit" parent="MakeSurface"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 31.0
+grow_horizontal = 2
+placeholder_text = "enter surface name"
+alignment = 1
+
+[node name="NotUnique" type="Label" parent="MakeSurface"]
+visible = false
+layout_mode = 0
+offset_left = 61.0
+offset_top = 68.0
+offset_right = 1076.0
+offset_bottom = 555.0
+text = "ENTER A UNIQUE SURFACE NAME"
+horizontal_alignment = 1
+script = ExtResource("4_0w6tl")
+
+[node name="Timer" type="Timer" parent="MakeSurface/NotUnique"]
+one_shot = true
+
+[node name="SurfaceView" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Surface" parent="SurfaceView" instance=ExtResource("5_m55mj")]
+layout_mode = 1
+
+[node name="ContainerView" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 1
+offset_right = 8.0
+offset_bottom = 8.0
+text = "BACK"
+
+[connection signal="pressed" from="PickSurface/Button" to="." method="set_state" binds= [1]]
+[connection signal="text_submitted" from="MakeSurface/LineEdit" to="." method="add_surface"]
+[connection signal="timeout" from="MakeSurface/NotUnique/Timer" to="MakeSurface/NotUnique" method="dissapear"]
+[connection signal="pressed" from="Button" to="." method="back"]
