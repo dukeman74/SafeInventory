@@ -11,7 +11,7 @@ var size_x:int
 var size_y:int
 
 var stuff_list:Array[String] = []
-var fill_level:int:
+var fill_level:int=40:
 	set(val):
 		fill_level=val
 		$ProgressBar.value=fill_level

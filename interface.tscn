@@ -20,7 +20,6 @@ descriptor_scene = ExtResource("2_581jl")
 container_view_scene = ExtResource("6_ntvm5")
 
 [node name="PickSurface" type="Control" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

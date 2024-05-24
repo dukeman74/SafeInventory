@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://dupkk14our7x0" path="res://sprites/open.png" id="3_be0xi"]
 
 [node name="Container" type="Control"]
+clip_contents = true
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
