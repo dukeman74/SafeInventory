@@ -43,5 +43,6 @@ func _on_y_text_submitted(new_text):
 
 
 func _on_button_pressed():
+	container.get_parent().container_list.erase(container)
 	container.queue_free()
 	get_node("../..").state=2
