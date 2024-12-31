@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://dulgiqt6d7tbw"]
+[gd_scene load_steps=9 format=3 uid="uid://dulgiqt6d7tbw"]
 
 [ext_resource type="Script" path="res://interface.gd" id="1_56li5"]
 [ext_resource type="PackedScene" uid="uid://mh1njj8cqf6h" path="res://surface_descriptor.tscn" id="2_581jl"]
 [ext_resource type="Script" path="res://PickSurface.gd" id="2_m6lpy"]
 [ext_resource type="Script" path="res://not_unique.gd" id="4_0w6tl"]
+[ext_resource type="Script" path="res://line_edit_no_funny.gd" id="5_m7gke"]
 [ext_resource type="Script" path="res://SearchResults.gd" id="6_es8me"]
 [ext_resource type="PackedScene" uid="uid://cwhkswjld3pi4" path="res://container_view.tscn" id="6_ntvm5"]
 [ext_resource type="PackedScene" uid="uid://blkwhcxtbv5bx" path="res://search_result.tscn" id="7_piaqe"]
@@ -13,6 +14,7 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_bottom = -100.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_56li5")
@@ -27,19 +29,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("2_m6lpy")
-
-[node name="SearchBar" type="LineEdit" parent="PickSurface"]
-layout_mode = 1
-anchors_preset = 14
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_top = -502.0
-offset_bottom = -471.0
-grow_horizontal = 2
-grow_vertical = 2
-placeholder_text = "Search everything"
-alignment = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="PickSurface"]
 layout_mode = 1
@@ -56,21 +45,33 @@ size_flags_horizontal = 3
 
 [node name="Label" type="Label" parent="PickSurface"]
 layout_mode = 1
-anchors_preset = 10
+anchors_preset = -1
 anchor_right = 1.0
-offset_bottom = 33.0
+anchor_bottom = 0.0143478
 grow_horizontal = 2
 text = "Select a surface"
 horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
 
-[node name="Button" type="Button" parent="PickSurface"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PickSurface"]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_top = 76.0
-offset_bottom = 107.0
+offset_top = 54.0
+offset_bottom = 120.0
 grow_horizontal = 2
+theme_override_constants/separation = 5
+
+[node name="Button" type="Button" parent="PickSurface/VBoxContainer"]
+layout_mode = 2
 text = "New Surface"
+metadata/_edit_use_anchors_ = true
+
+[node name="SearchBar" type="LineEdit" parent="PickSurface/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "Search everything"
+alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="MakeSurface" type="Control" parent="."]
 visible = false
@@ -90,6 +91,7 @@ offset_bottom = 119.0
 grow_horizontal = 2
 placeholder_text = "enter surface name"
 alignment = 1
+script = ExtResource("5_m7gke")
 
 [node name="NotUnique" type="Label" parent="MakeSurface"]
 visible = false
@@ -212,8 +214,26 @@ size_flags_vertical = 4
 text = "Show data folder
 "
 
+[node name="ExportButton" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Export string to clipboard
+"
+
 [node name="Label2" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
+
+[node name="Label5" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ImportButton" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(0.831373, 0, 0, 1)
+text = "Import string from clipboard
+(OVERWRITES MEMORY)"
 
 [node name="Label3" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -238,13 +258,15 @@ size_flags_vertical = 4
 theme_override_colors/font_color = Color(0.831373, 0, 0, 1)
 text = "Quit and lose my changes"
 
-[connection signal="text_submitted" from="PickSurface/SearchBar" to="." method="run_search"]
-[connection signal="pressed" from="PickSurface/Button" to="." method="set_state" binds= [1]]
+[connection signal="pressed" from="PickSurface/VBoxContainer/Button" to="." method="set_state" binds= [1]]
+[connection signal="text_submitted" from="PickSurface/VBoxContainer/SearchBar" to="." method="run_search"]
 [connection signal="text_submitted" from="MakeSurface/LineEdit" to="." method="add_surface"]
 [connection signal="timeout" from="MakeSurface/NotUnique/Timer" to="MakeSurface/NotUnique" method="dissapear"]
 [connection signal="pressed" from="Button" to="." method="back"]
 [connection signal="pressed" from="SaveButton" to="." method="do_save"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Button" to="." method="back"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Data" to="." method="_on_data_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ExportButton" to="." method="_on_export_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ImportButton" to="." method="_on_import_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/Button" to="." method="do_save" binds= [true]]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/Button2" to="." method="quit"]

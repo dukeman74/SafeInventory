@@ -48,7 +48,15 @@ var back_map:Dictionary = {SURFACE_PICK:SURFACE_PICK, SURFACE_CREATE:SURFACE_PIC
 	, SURFACE_VIEW:SURFACE_PICK, CONTAINER_VIEW:SURFACE_VIEW, \
 	SEARCH_RESULTS:SURFACE_PICK}
 
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_GO_BACK_REQUEST:
+		back()
+
 func _ready():
+	get_tree().set_quit_on_go_back(false)
+	if OS.has_feature("android"):
+		print("android moment")
+	print("moment moment")
 	nodes=[surface_pick_node,new_surf_node,surf_view_node,container_view_node,\
 		search_node]
 	me=self
@@ -91,6 +99,24 @@ func save(file:FileAccess):
 	for surf in surface_list:
 		surf.serialize(file)
 
+const EXPORT_HEADER:String = "!!!#INVENTORY MANIFEST#!!!"
+
+func export() -> String:
+	var ex_string:String = EXPORT_HEADER
+	for surf in surface_list:
+		ex_string+=surf.serialize_text()+"]"
+	ex_string = ex_string.left(-1)
+	return ex_string
+
+func import(load_string:String)->void:
+	var surfaces=load_string.split("]")
+	for surf_string in surfaces:
+		var surf:Surface = Surface.deserialize_text(surf_string)
+		make_descriptor_for_surf(surf)
+		surf.visible=false
+		surf_view_node.add_child(surf)
+		surface_list.append(surf)
+
 func load_saved(file:FileAccess):
 	var total_surfs:int = file.get_32()
 	for i in total_surfs:
@@ -109,8 +135,8 @@ func _input(_event):
 	if Input.is_action_just_pressed("back"):
 		back()
 		
-func do_save(quitout:bool=false):
-	var file = FileAccess.open("user://data", FileAccess.WRITE)
+func do_save(quitout:bool=false, filename="data"):
+	var file = FileAccess.open("user://"+filename, FileAccess.WRITE)
 	save(file)
 	if quitout:
 		quit()
@@ -118,8 +144,8 @@ func do_save(quitout:bool=false):
 func quit():
 	get_tree().quit()
 
-func do_load():
-	var file = FileAccess.open("user://data", FileAccess.READ)
+func do_load(filename="data"):
+	var file = FileAccess.open("user://"+filename, FileAccess.READ)
 	if (file):
 		load_saved(file)
 
@@ -130,5 +156,22 @@ func back():
 	state=back_map[state]
 
 
+
 func _on_data_pressed():
 	OS.shell_open(ProjectSettings.globalize_path("user://"))
+
+
+func _on_import_pressed() -> void:
+	var new_string:String=DisplayServer.clipboard_get()
+	if not new_string.begins_with(EXPORT_HEADER):
+		return
+	new_string=new_string.right(-len(EXPORT_HEADER))
+	while len(surface_list):
+		var surf:Surface=surface_list[-1]
+		rem_surface(surf)
+		surf.queue_free()
+	import(new_string)
+	
+	
+func _on_export_pressed() -> void:
+	DisplayServer.clipboard_set(export())

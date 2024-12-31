@@ -1,13 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://cwhkswjld3pi4"]
+[gd_scene load_steps=4 format=3 uid="uid://cwhkswjld3pi4"]
 
 [ext_resource type="Script" path="res://container_view.gd" id="1_ridfd"]
 [ext_resource type="PackedScene" uid="uid://c83aumv3htbse" path="res://single_line_item.tscn" id="2_yk8he"]
+[ext_resource type="Script" path="res://line_edit_no_funny.gd" id="3_ki5im"]
 
 [node name="ContainerView" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_bottom = -100.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ridfd")
@@ -55,6 +57,7 @@ text = "DESTROY"
 layout_mode = 2
 placeholder_text = "NEW ITEM"
 alignment = 1
+script = ExtResource("3_ki5im")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
 layout_mode = 2

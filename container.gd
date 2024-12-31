@@ -59,7 +59,32 @@ func serialize(file:FileAccess)->void:
 	for strn in stuff_list:
 		file.store_8(len(strn))
 		file.store_string(strn)
+		
 
+func serialize_text() -> String:
+	var items:Array = [fill_level,int(position.x),int(position.y),int(size.x),int(size.y)]
+	items = items.map(func(item):return str(item))
+	var out_string:String = items.reduce(
+		func(accum:String, item:String) -> String: return accum+item+"`" , "")
+	for strn in stuff_list:
+		out_string+=strn+"}"
+	out_string=out_string.left(-1)
+	return out_string
+
+
+static func deserialize_text(text:String)->StorageContainer:
+	var ret:StorageContainer = global.scene[StorageContainer].instantiate()
+	var args:PackedStringArray = text.split("`")
+	var arg:int=0
+	ret.fill_level = int(args[arg]); arg+=1
+	ret.screen_x = int(args[arg]); arg+=1
+	ret.screen_y = int(args[arg]); arg+=1
+	ret.size_x = int(args[arg]); arg+=1
+	ret.size_y = int(args[arg]); arg+=1
+	var stuff:PackedStringArray = args[-1].split("}")
+	for stuff_name in stuff:
+		ret.stuff_list.append(stuff_name)
+	return ret
 
 static func deserialize(file:FileAccess)->StorageContainer:
 	var ret:StorageContainer = global.scene[StorageContainer].instantiate()

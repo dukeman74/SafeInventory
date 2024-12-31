@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cic43ugyuugqs"
-path="res://.godot/imported/safe inventory.svg-bad70869bb11f5853572513e49fa19dc.ctex"
+path="res://.godot/imported/safe inventory.svg-f9086980bcd77a37068f678c43f06bb4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://safe inventory.svg"
-dest_files=["res://.godot/imported/safe inventory.svg-bad70869bb11f5853572513e49fa19dc.ctex"]
+source_file="res://icons/safe inventory.svg"
+dest_files=["res://.godot/imported/safe inventory.svg-f9086980bcd77a37068f678c43f06bb4.ctex"]
 
 [params]
 

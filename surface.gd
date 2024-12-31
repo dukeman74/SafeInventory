@@ -31,6 +31,28 @@ func serialize(file:FileAccess):
 	file.store_32(len(container_list))
 	for cont in container_list:
 		cont.serialize(file)
+		
+func serialize_text() -> String:
+	var string_out:String=surface_name+"["
+	for cont in container_list:
+		string_out+=cont.serialize_text()+"{"
+	string_out = string_out.left(-1)
+	return string_out
+	
+static func deserialize_text(text:String)->Surface:
+	var ret:Surface = global.scene[Surface].instantiate()
+	var box:StorageContainer
+	var parts:PackedStringArray=text.split("[")
+	ret.surface_name = parts[0]
+	var box_texts:PackedStringArray = parts[1].split("{")
+	for box_text in box_texts:
+		box=StorageContainer.deserialize_text(box_text)
+		box.position=Vector2(box.screen_x,box.screen_y)
+		box.set_deferred.call_deferred("size",Vector2(box.size_x,box.size_y))
+		ret.add_child(box)
+		box.get_node("TextureButton").pressed.connect(Interface.me.set_state.bind(3,box))
+		ret.container_list.append(box)
+	return ret	
 
 static func deserialize(file:FileAccess)->Surface:
 	var ret:Surface = global.scene[Surface].instantiate()
